@@ -1,0 +1,6 @@
+@ManageSchoolAPI_HostAddress = http://localhost:5153
+
+GET {{ManageSchoolAPI_HostAddress}}/
+Accept: application/json
+
+###
