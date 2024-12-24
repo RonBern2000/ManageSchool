@@ -2,11 +2,15 @@
 using CommunityToolkit.Mvvm.Input;
 using ManageSchool.Models.DTO;
 using ManageSchool.Services;
-using ManageSchool.Views;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ManageSchool.ViewModels
 {
-    public partial class LoginViewModel : ObservableObject
+    public partial class RegisterViewModel : ObservableObject
     {
         private readonly IAuthService _authService;
         [ObservableProperty]
@@ -15,16 +19,18 @@ namespace ManageSchool.ViewModels
         string username;
         [ObservableProperty]
         string password;
-        public LoginViewModel(IAuthService authService)
+        [ObservableProperty]
+        string email;
+        public RegisterViewModel(IAuthService authService)
         {
-            user = new();
-            username = string.Empty;
-            password = string.Empty;
+            User = new();
+            Username = string.Empty;
+            Password = string.Empty;
+            Email = string.Empty;
             _authService = authService;
         }
-
         [RelayCommand]
-        public async Task LoginAsync()
+        public async Task RegisterAsync()
         {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
                 return;
@@ -40,21 +46,5 @@ namespace ManageSchool.ViewModels
             }
             //TODO: Handle failure
         }
-        [RelayCommand]
-        public async Task GoToRegisterAsync()
-        {
-            await Shell.Current.GoToAsync($"{nameof(RegisterPage)}",true);
-        }
-        //private async Task SaveTokenAsync(string token)
-        //{
-        //    try
-        //    {
-        //        await SecureStorage.SetAsync("jwt_token", token);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Console.WriteLine($"Error while saving the token, {ex.Message}");
-        //    }
-        //}
     }
 }

@@ -24,8 +24,11 @@ namespace ManageSchool
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<MainPage>();
 
+            builder.Services.AddSingleton<RegisterViewModel>();
+            builder.Services.AddSingleton<RegisterPage>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

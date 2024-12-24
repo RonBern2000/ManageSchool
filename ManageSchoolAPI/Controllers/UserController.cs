@@ -47,23 +47,6 @@ namespace ManageSchoolAPI.Controllers
             return user;
         }
 
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(RegisterUserDTO userDto)
-        {
-            var newUser = new User
-            {
-                UserId = Guid.NewGuid().ToString(),
-                Username = userDto.Username,
-                Email = userDto.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password),
-            };
-            await _userRepository.AddUserAsync(newUser);
-            await _userRepository.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = newUser.UserId }, newUser);
-        }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
@@ -79,10 +62,21 @@ namespace ManageSchoolAPI.Controllers
             return NoContent();
         }
 
-        private async Task <bool> UserExists(string id)
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("register")]
+        public async Task<ActionResult<User>> Register(RegisterUserDTO userDto)
         {
-            var user = await _userRepository.GetUserAsync(id);
-            return true ? user is not null : false;
+            var newUser = new User
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Username = userDto.Username,
+                Email = userDto.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password),
+            };
+            await _userRepository.AddUserAsync(newUser);
+            await _userRepository.SaveChangesAsync();
+
+            return CreatedAtAction("GetUser", new { id = newUser.UserId }, newUser);
         }
 
         [HttpPost("login")]
@@ -126,6 +120,11 @@ namespace ManageSchoolAPI.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+        private async Task<bool> UserExists(string id)
+        {
+            var user = await _userRepository.GetUserAsync(id);
+            return true ? user is not null : false;
         }
     }
 }
