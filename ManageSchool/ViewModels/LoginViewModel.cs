@@ -45,16 +45,5 @@ namespace ManageSchool.ViewModels
         {
             await Shell.Current.GoToAsync($"{nameof(RegisterPage)}",true);
         }
-        //private async Task SaveTokenAsync(string token)
-        //{
-        //    try
-        //    {
-        //        await SecureStorage.SetAsync("jwt_token", token);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Console.WriteLine($"Error while saving the token, {ex.Message}");
-        //    }
-        //}
     }
 }

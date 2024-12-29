@@ -2,49 +2,50 @@
 using CommunityToolkit.Mvvm.Input;
 using ManageSchool.Models.DTO;
 using ManageSchool.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ManageSchool.Validations;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace ManageSchool.ViewModels
 {
     public partial class RegisterViewModel : ObservableObject
     {
+        public RegistrationForm RegistrationForm { get; }
+        public ObservableCollection<string> Errors { get; } = [];
         private readonly IAuthService _authService;
-        [ObservableProperty]
-        User user;
-        [ObservableProperty]
-        string username;
-        [ObservableProperty]
-        string password;
-        [ObservableProperty]
-        string email;
         public RegisterViewModel(IAuthService authService)
         {
-            User = new();
-            Username = string.Empty;
-            Password = string.Empty;
-            Email = string.Empty;
+            RegistrationForm = new RegistrationForm();
+            RegistrationForm.ErrorsChanged += OnErrorsChanged;
             _authService = authService;
         }
+        public void Reset()
+        {
+            RegistrationForm.Clear();
+            Errors.Clear();
+        }
+        private void OnErrorsChanged(object ?sender, DataErrorsChangedEventArgs e)
+        {
+            Errors.Clear();
+
+            var allErrors = RegistrationForm.GetErrors(null);
+
+            if(allErrors is not null)
+            {
+                foreach (var error in allErrors)
+                    Errors.Add(error.ErrorMessage!);
+            }
+        }
+
         [RelayCommand]
         public async Task RegisterAsync()
         {
-            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-                return;
+            Errors.Clear();
 
-            var loginResponse = await _authService.LoginAsync(Username, Password);
-
-            if (loginResponse is not null)
+            if (!Errors.Any())
             {
-                await _authService.SaveTokenAsync(loginResponse.Token!);
-                User = loginResponse.User!;
-                return;
-                //TODO: Navigate to the next page
+                await _authService.RegisterAsync(RegistrationForm.Username, RegistrationForm.Password, RegistrationForm.Email);
             }
-            //TODO: Handle failure
         }
     }
 }

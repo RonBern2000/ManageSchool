@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -76,7 +77,13 @@ namespace ManageSchoolAPI.Controllers
             await _userRepository.AddUserAsync(newUser);
             await _userRepository.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = newUser.UserId }, newUser);
+            var token = GenerateJwtToken(newUser);
+
+            return CreatedAtAction("GetUser", new
+            {
+                Token = token,
+                User = newUser,
+            });
         }
 
         [HttpPost("login")]
