@@ -35,6 +35,8 @@ namespace ManageSchoolAPI.Repositories
 
         public async Task<User?> GetUserByUsernameAsync(string username)
             => await _schoolContext.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
+        public async Task<User?> GetUserByEmailAsync(string email)
+            => await _schoolContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
 
         public async Task SaveChangesAsync()
         {

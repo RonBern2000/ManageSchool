@@ -35,10 +35,11 @@ namespace ManageSchool.ViewModels
             {
                 await _authService.SaveTokenAsync(loginResponse.Token!);
                 User = loginResponse.User!;
+
+                await Shell.Current.GoToAsync($"{nameof(ManagePage)}", true);
                 return;
-                //TODO: Navigate to the next page
             }
-            //TODO: Handle failure
+            await Shell.Current.DisplayAlert("Log in failed", "Please try again", "OK");
         }
         [RelayCommand]
         public async Task GoToRegisterAsync()

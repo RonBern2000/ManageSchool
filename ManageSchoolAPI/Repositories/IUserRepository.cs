@@ -9,6 +9,7 @@ namespace ManageSchoolAPI.Repositories
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User?> GetUserAsync(string id);
         Task<User?> GetUserByUsernameAsync(string username);
+        Task<User?> GetUserByEmailAsync(string email);
         Task UpdateAsync(string id, User user);
         Task DeleteAsync(User userToDelete);
         Task AddUserAsync(User newUser);

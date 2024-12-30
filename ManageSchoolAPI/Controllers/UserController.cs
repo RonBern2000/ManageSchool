@@ -2,6 +2,7 @@
 using ManageSchoolAPI.Models;
 using ManageSchoolAPI.Models.DTO;
 using ManageSchoolAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -58,7 +59,6 @@ namespace ManageSchoolAPI.Controllers
             }
 
             await _userRepository.DeleteAsync(user);
-            await _userRepository.SaveChangesAsync();
 
             return NoContent();
         }
@@ -67,6 +67,14 @@ namespace ManageSchoolAPI.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(RegisterUserDTO userDto)
         {
+            var existingUser = await _userRepository.GetUserByUsernameAsync(userDto.Username!);
+            if (existingUser is not null)
+                return Conflict("Username already exists.");
+
+            var existingEmail = await _userRepository.GetUserByEmailAsync(userDto.Email!);
+            if (existingEmail is not null)
+                return Conflict("Email already registered.");
+
             var newUser = new User
             {
                 UserId = Guid.NewGuid().ToString(),
@@ -75,7 +83,6 @@ namespace ManageSchoolAPI.Controllers
                 Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password),
             };
             await _userRepository.AddUserAsync(newUser);
-            await _userRepository.SaveChangesAsync();
 
             var token = GenerateJwtToken(newUser);
 
@@ -106,6 +113,14 @@ namespace ManageSchoolAPI.Controllers
                 Token = token,
                 User = user,
             });
+        }
+        [Authorize]
+        [HttpPut("editUser")]
+        public async Task<IActionResult> EditUser([FromBody] RegisterUserDTO edirUser)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(edirUser.Username!);
+
+            return Ok();
         }
 
         private string GenerateJwtToken(User user)

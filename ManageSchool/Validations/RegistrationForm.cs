@@ -31,7 +31,6 @@ namespace ManageSchool.Validations
         [Required(ErrorMessage = "Email is required.")]
         [StringLength(70, ErrorMessage = "Email must not exceed 70 characters.")]
         [EmailAddress(ErrorMessage = "Invalid email address format.")]
-        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
         string email;
         public RegistrationForm()
         {
@@ -47,16 +46,9 @@ namespace ManageSchool.Validations
             ConfirmPassword = string.Empty;
             Email = string.Empty;
         }
-        public void ValidateForm()
+        public void ValidatePropertyWrapper(object value, string propertyName)
         {
-            ValidateAllProperties();
-        }
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            if(e.PropertyName is not null )
-                ValidateProperty(e.PropertyName);
+            ValidateProperty(value, propertyName);
         }
         public static ValidationResult ?ValidateConfirmPassword(string confirmPasswordValue, ValidationContext context)
         {
