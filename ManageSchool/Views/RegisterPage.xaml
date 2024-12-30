@@ -9,7 +9,8 @@
     <StackLayout Padding="20">
         <Entry Text="{Binding RegistrationForm.Username, Mode=TwoWay}" 
                Placeholder="Enter Username"
-               Unfocused="UsernameEntryUnfocused" />
+               Unfocused="EntryUnfocused" 
+               ReturnCommandParameter="Username"/>
         <Label Text="{Binding UsernameErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding UsernameErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
@@ -17,7 +18,8 @@
         <Entry Text="{Binding RegistrationForm.Password, Mode=TwoWay}" 
                Placeholder="Enter Password" 
                IsPassword="True"
-               Unfocused="PasswordEntryUnfocused" />
+               Unfocused="EntryUnfocused" 
+               ReturnCommandParameter="Password"/>
         <Label Text="{Binding PasswordErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding PasswordErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
@@ -25,14 +27,16 @@
         <Entry Text="{Binding RegistrationForm.ConfirmPassword, Mode=TwoWay}" 
                Placeholder="Confirm Password" 
                IsPassword="True"
-               Unfocused="ConfirmPasswordEntryUnfocused" />
+               Unfocused="EntryUnfocused" 
+               ReturnCommandParameter="ConfirmPassword"/>
         <Label Text="{Binding ConfirmPasswordErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding ConfirmPasswordErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
 
         <Entry Text="{Binding RegistrationForm.Email, Mode=TwoWay}" 
                Placeholder="Enter Email"
-               Unfocused="EmailEntryUnfocused"/>
+               Unfocused="EntryUnfocused"
+               ReturnCommandParameter="Email"/>
         <Label Text="{Binding EmailErrorMessage}"
                TextColor="Red"
                IsVisible="{Binding EmailErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />

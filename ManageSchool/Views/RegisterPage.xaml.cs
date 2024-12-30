@@ -18,37 +18,46 @@ namespace ManageSchool.Views
 				registerViewModel.Reset();
 			}
         }
-		private void UsernameEntryUnfocused(object sender, FocusEventArgs e)
-		{
-            if (BindingContext is RegisterViewModel registerViewModel)
-            {
-                registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Username, nameof(registerViewModel.RegistrationForm.Username));
-                registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Username);
-            }
-        }
-        private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
+        private void EntryUnfocused(object sender, FocusEventArgs e)
         {
             if (BindingContext is RegisterViewModel registerViewModel)
             {
-                registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Password, nameof(registerViewModel.RegistrationForm.Password));
-                registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Password);
-            }
-        }
-        private void ConfirmPasswordEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            if (BindingContext is RegisterViewModel registerViewModel)
-            {
-                registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.ConfirmPassword, nameof(registerViewModel.RegistrationForm.ConfirmPassword));
-                registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.ConfirmPassword);
-            }
-        }
-        private void EmailEntryUnfocused(object sender, FocusEventArgs e)
-        {
-            if (BindingContext is RegisterViewModel registerViewModel)
-            {
-                registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Email, nameof(registerViewModel.RegistrationForm.Email));
-                registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Email);
+                var propertyName = (string)((Entry)sender).ReturnCommandParameter;
+                registerViewModel.RegistrationForm.ValidatePropertyWrapper($"{registerViewModel.RegistrationForm.GetPropByString(propertyName)}", propertyName);
+                registerViewModel.UpdateErrorMessages(propertyName);
             }
         }
     }
 }
+//private void UsernameEntryUnfocused(object sender, FocusEventArgs e)
+//{
+//    if (BindingContext is RegisterViewModel registerViewModel)
+//    {
+//        registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Username, nameof(registerViewModel.RegistrationForm.Username));
+//        registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Username);
+//    }
+//}
+//private void PasswordEntryUnfocused(object sender, FocusEventArgs e)
+//{
+//    if (BindingContext is RegisterViewModel registerViewModel)
+//    {
+//        registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Password, nameof(registerViewModel.RegistrationForm.Password));
+//        registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Password);
+//    }
+//}
+//private void ConfirmPasswordEntryUnfocused(object sender, FocusEventArgs e)
+//{
+//    if (BindingContext is RegisterViewModel registerViewModel)
+//    {
+//        registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.ConfirmPassword, nameof(registerViewModel.RegistrationForm.ConfirmPassword));
+//        registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.ConfirmPassword);
+//    }
+//}
+//private void EmailEntryUnfocused(object sender, FocusEventArgs e)
+//{
+//    if (BindingContext is RegisterViewModel registerViewModel)
+//    {
+//        registerViewModel.RegistrationForm.ValidatePropertyWrapper(registerViewModel.RegistrationForm.Email, nameof(registerViewModel.RegistrationForm.Email));
+//        registerViewModel.UpdateErrorMessages(registerViewModel.RegistrationForm.Email);
+//    }
+//}

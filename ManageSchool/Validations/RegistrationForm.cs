@@ -50,6 +50,16 @@ namespace ManageSchool.Validations
         {
             ValidateProperty(value, propertyName);
         }
+        public string ?GetPropByString(string name)
+        {
+            var propertyInfo = this.GetType().GetProperty(name);
+            if(propertyInfo is not null && propertyInfo.CanRead)
+            {
+                var value = propertyInfo.GetValue(this);
+                return value?.ToString();
+            }
+            return null;
+        }
         public static ValidationResult ?ValidateConfirmPassword(string confirmPasswordValue, ValidationContext context)
         {
             var instance = context.ObjectInstance as RegistrationForm;
