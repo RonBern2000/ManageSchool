@@ -4,6 +4,7 @@ using ManageSchool.Services;
 using ManageSchool.ViewModels;
 using ManageSchool.Views;
 using ManageSchool.Handlers;
+using UraniumUI;
 
 namespace ManageSchool
 {
@@ -15,6 +16,8 @@ namespace ManageSchool
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseUraniumUI()
+                .UseUraniumUIMaterial()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
