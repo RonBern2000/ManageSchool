@@ -1,6 +1,8 @@
 using ManageSchoolAPI.Data;
 using ManageSchoolAPI.Models;
+using ManageSchoolAPI.Models.Roles;
 using ManageSchoolAPI.Repositories;
+using ManageSchoolAPI.SIngletons;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +27,14 @@ builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt"));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton(provider => LazyEmployeeFactoryRegistry.Instance);
 
 builder.Services.AddDbContext<SchoolContext>(options =>
 {
@@ -83,7 +88,6 @@ builder.Services.AddAuthentication(options =>
         }
     };
 });
-
 builder.Services.AddAuthorization();
 
 var app = builder.Build();

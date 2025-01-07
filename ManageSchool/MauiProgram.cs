@@ -29,13 +29,13 @@ namespace ManageSchool
             builder.Services.AddHttpClient<IAuthService, AuthService>()
                             .AddHttpMessageHandler<JwtTokenHandler>(); // Handler that attaches token to the Authorization Header
 
-            builder.Services.AddSingleton<LoginViewModel>();
-            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddTransient<LoginViewModel>();
+            builder.Services.AddTransient<MainPage>();
 
-            builder.Services.AddSingleton<RegisterViewModel>();
-            builder.Services.AddSingleton<RegisterPage>();
+            builder.Services.AddTransient<RegisterViewModel>();
+            builder.Services.AddTransient<RegisterPage>();
 
-            builder.Services.AddSingleton<ManagePage>();
+            builder.Services.AddTransient<ManagePage>();
 
 #if DEBUG
             builder.Logging.AddDebug();

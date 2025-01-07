@@ -9,15 +9,15 @@ namespace ManageSchool.Views
 			InitializeComponent();
 			BindingContext = registerViewModel;
 		}
-        protected override void OnNavigatedTo(NavigatedToEventArgs args)
-        {
-            base.OnNavigatedTo(args);
+   //     protected override void OnNavigatedTo(NavigatedToEventArgs args)
+   //     {
+   //         base.OnNavigatedTo(args);
 
-			if(BindingContext is  RegisterViewModel registerViewModel)
-			{
-				registerViewModel.Reset();
-			}
-        }
+			//if(BindingContext is  RegisterViewModel registerViewModel)
+			//{
+			//	registerViewModel.Reset();
+			//}
+   //     }
         private void EntryUnfocused(object sender, FocusEventArgs e)
         {
             if (BindingContext is RegisterViewModel registerViewModel)

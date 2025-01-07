@@ -5,6 +5,6 @@ namespace ManageSchoolAPI.Factories
 {
     public interface IEmployeeFactory
     {
-        public Employee CreateEmployee(IEmployeeRole employeeRole);
+        public Employee CreateEmployee(EmployeeCreationParameters employeeCreationParameters);
     }
 }

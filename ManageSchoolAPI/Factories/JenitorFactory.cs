@@ -5,9 +5,9 @@ namespace ManageSchoolAPI.Factories
 {
     public class JenitorFactory : IEmployeeFactory
     {
-        public Employee CreateEmployee(IEmployeeRole employeeRole)
+        public Employee CreateEmployee(EmployeeCreationParameters parameters)
         {
-            return new Jenitor(employeeRole);
+            return new Jenitor(parameters.EmployeeRole, parameters.Name, parameters.Surname) { EmployeeId = Guid.NewGuid().ToString() };
         }
     }
 }

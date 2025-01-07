@@ -1,13 +1,24 @@
 ﻿using ManageSchoolAPI.Models.Roles;
-using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ManageSchoolAPI.Models
 {
     public abstract class Employee
     {
-        public IEmployeeRole EmployeeRole { protected get; set; }
-        public Employee(IEmployeeRole employeeRole)=>
-            EmployeeRole = employeeRole;
+        [NotMapped]
+        public IEmployeeRole EmployeeRole { protected get; set; } = default!;
+        [Key]
+        public string EmployeeId { get; set; } = default!;
+        public string Name { get; set; } = default!;
+        public string Surname { get; set; } = default!;
+        public Employee()
+        { }
+        public Employee(string name, string surename)
+        {
+            Name = name;
+            Surname = surename;
+        }
         public void Work()
         {
             EmployeeRole.DoTheirDuties(); // whether its a Jenitor or a Teacher

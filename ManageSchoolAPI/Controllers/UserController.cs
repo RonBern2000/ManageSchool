@@ -86,7 +86,7 @@ namespace ManageSchoolAPI.Controllers
 
             var token = GenerateJwtToken(newUser);
 
-            return CreatedAtAction("GetUser", new
+            return Ok(new
             {
                 Token = token,
                 User = newUser,

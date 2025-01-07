@@ -8,6 +8,12 @@ namespace ManageSchoolAPI.Data
         public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Teacher> Teachers { get; set; } = default!;
+        public DbSet<Jenitor> Jenitors { get; set; } = default!;
     }
 }

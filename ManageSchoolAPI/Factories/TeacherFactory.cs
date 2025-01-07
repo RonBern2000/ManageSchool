@@ -1,13 +1,13 @@
 ﻿using ManageSchoolAPI.Models;
-using ManageSchoolAPI.Models.Roles;
+using ManageSchoolAPI.Enums;
 
 namespace ManageSchoolAPI.Factories
 {
     public class TeacherFactory : IEmployeeFactory
     {
-        public Employee CreateEmployee(IEmployeeRole employeeRole)
+        public Employee CreateEmployee(EmployeeCreationParameters parameters)
         {
-            return new Teacher(employeeRole);
+            return new Teacher(parameters.EmployeeRole, parameters.Name, parameters.Surname, (Profession)parameters.Professions!) { EmployeeId = Guid.NewGuid().ToString() };
         }
     }
 }
