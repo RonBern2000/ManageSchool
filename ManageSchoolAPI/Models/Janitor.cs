@@ -2,10 +2,10 @@
 
 namespace ManageSchoolAPI.Models
 {
-    public class Jenitor : Employee
+    public class Janitor : Employee
     {
-        public Jenitor() { }
-        public Jenitor(IEmployeeRole employeeRole, string name, string surname) : base(name, surname) 
+        public Janitor() { }
+        public Janitor(IEmployeeRole employeeRole, string name, string surname) : base(name, surname) 
         {
             EmployeeRole = employeeRole;
         }

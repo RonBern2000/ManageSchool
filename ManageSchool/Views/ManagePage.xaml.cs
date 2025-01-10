@@ -1,10 +1,13 @@
+using ManageSchool.ViewModels;
+
 namespace ManageSchool.Views;
 
 public partial class ManagePage : ContentPage
 {
-	public ManagePage()
+	public ManagePage(ManageViewModel manageViewModel)
 	{
 		InitializeComponent();
+        BindingContext = manageViewModel;
 	}
 
     protected override void OnAppearing()
@@ -28,5 +31,10 @@ public partial class ManagePage : ContentPage
             IsVisible = true
         });
     }
-
+    protected async void OnItemClicked(object sender, EventArgs e)
+    {
+        ToolbarItem item = (ToolbarItem)sender;
+        await Shell.Current.GoToAsync($"{item.Text}", true);
+        return;
+    }
 }

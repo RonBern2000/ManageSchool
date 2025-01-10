@@ -1,12 +1,70 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ManageSchool.ViewModels"
+             xmlns:ur="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="ManageSchool.Views.ManagePage"
-             Title="ManagePage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             x:DataType="viewmodel:ManageViewModel"
+             Title="Home"
+             Shell.BackgroundColor ="{StaticResource PrimaryContainer}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="EmployeesPage"
+                     Clicked="OnItemClicked">
+        </ToolbarItem>
+        <ToolbarItem Text="StudentsPage"
+                     Clicked="OnItemClicked">
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
+    <Grid>
+    <VerticalStackLayout BackgroundColor="{StaticResource PrimaryContainer}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Button Text="Add Teacher" 
+                    Command="{Binding AddTeacherCommand}"
+                    Style="{StaticResource AddButton}"/>
+            <Button Text="Add Janitor"
+                    Command="{Binding AddJenitorCommand}"
+                    Style="{StaticResource AddButton}"
+                    Grid.Column="1"/>
+            <Button Text="Add Student"
+                    Command="{Binding AddStudentCommand}"
+                    Style="{StaticResource AddButton}"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="1"/>
+        </Grid>
     </VerticalStackLayout>
+
+        <ContentView x:Name="FormOverlay" IsVisible="{Binding IsFormVisible}">
+            <VerticalStackLayout BackgroundColor="White"
+                                  Padding="20"
+                                  HorizontalOptions="Center"
+                                  VerticalOptions="Center"
+                                  WidthRequest="300"
+                                  HeightRequest="400">
+                <!--<Label Text="Add Entity Form"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+                <Entry Placeholder="Name" />
+                <Entry Placeholder="Details" />-->
+                <Button Text="Submit"
+                        Command="{Binding SubmitFormCommand}"
+                        Style="{StaticResource ButtonSignInUp}"
+                        />
+                <Button Text="Cancel"
+                        Command="{Binding CancelFormAsyncCommand}"
+                        Style="{StaticResource ButtonSignInUp}"
+                        Margin="0,5"
+                        />
+            </VerticalStackLayout>
+        </ContentView>
+    </Grid>
 </ContentPage>

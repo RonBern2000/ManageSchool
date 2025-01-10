@@ -12,8 +12,13 @@ namespace ManageSchoolAPI.Data
         {
             base.OnModelCreating(modelBuilder);
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
+        }
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<Teacher> Teachers { get; set; } = default!;
-        public DbSet<Jenitor> Jenitors { get; set; } = default!;
+        public DbSet<Janitor> Jenitors { get; set; } = default!;
     }
 }

@@ -16,7 +16,7 @@ namespace ManageSchoolAPI.Repositories
             {
                 await _schoolContext.Teachers.AddAsync(teacher);
             }
-            else if(employee is Jenitor jenitor)
+            else if(employee is Janitor jenitor)
             {
                 await _schoolContext.Jenitors.AddAsync(jenitor);
             }
@@ -32,7 +32,7 @@ namespace ManageSchoolAPI.Repositories
             {
                 _schoolContext.Teachers.Remove(teacher);
             }
-            else if (employee is Jenitor jenitor)
+            else if (employee is Janitor jenitor)
             {
                 _schoolContext.Jenitors.Remove(jenitor);
             }

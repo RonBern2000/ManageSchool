@@ -36,6 +36,7 @@ namespace ManageSchool
             builder.Services.AddTransient<RegisterPage>();
 
             builder.Services.AddTransient<ManagePage>();
+            builder.Services.AddTransient<ManageViewModel>();
 
 #if DEBUG
             builder.Logging.AddDebug();

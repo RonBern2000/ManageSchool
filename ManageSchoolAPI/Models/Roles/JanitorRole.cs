@@ -1,6 +1,6 @@
 ﻿namespace ManageSchoolAPI.Models.Roles
 {
-    public class JenitorRole : IEmployeeRole
+    public class JanitorRole : IEmployeeRole
     {
         public void DoTheirDuties()
         {

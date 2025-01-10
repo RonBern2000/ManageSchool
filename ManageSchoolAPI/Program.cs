@@ -38,8 +38,9 @@ builder.Services.AddSingleton(provider => LazyEmployeeFactoryRegistry.Instance);
 
 builder.Services.AddDbContext<SchoolContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection 'Default Connection not found'"));
+    options.UseLazyLoadingProxies()
+        .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection 'Default Connection not found'"));
 });
 
 builder.Services.AddAuthentication(options =>

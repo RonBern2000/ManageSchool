@@ -11,7 +11,7 @@ namespace ManageSchoolAPI.SIngletons
         public void InitializeFactories()
         {
             Instance[nameof(Teacher)] = new TeacherFactory();
-            Instance[nameof(Jenitor)] = new JenitorFactory();
+            Instance[nameof(Janitor)] = new JanitorFactory();
         }
     }
 }

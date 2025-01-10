@@ -42,11 +42,11 @@ namespace ManageSchoolAPI.Controllers
         {
             EmployeeCreationParameters parameters = new EmployeeCreationParameters
             {
-                EmployeeRole = new JenitorRole(),
+                EmployeeRole = new JanitorRole(),
                 Name = newJenitor.Name,
                 Surname = newJenitor.Surname,
             };
-            Teacher t = (Teacher)LazyEmployeeFactoryRegistry.Instance[nameof(Jenitor)].CreateEmployee(parameters);
+            Teacher t = (Teacher)LazyEmployeeFactoryRegistry.Instance[nameof(Janitor)].CreateEmployee(parameters);
             await _employeeRepository.AddEmployeeAsync(t);
             return Ok();
         }
