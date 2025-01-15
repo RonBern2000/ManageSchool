@@ -7,7 +7,7 @@ namespace ManageSchoolAPI.Factories
     {
         public Employee CreateEmployee(EmployeeCreationParameters parameters)
         {
-            return new Janitor(parameters.EmployeeRole, parameters.Name, parameters.Surname) { EmployeeId = Guid.NewGuid().ToString() };
+            return new Janitor(parameters.EmployeeRole, parameters.Name, parameters.Surname) { EmployeeId = Guid.NewGuid().ToString(), Manager = parameters.Manager };
         }
     }
 }

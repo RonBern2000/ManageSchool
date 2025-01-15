@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:ManageSchool.Models"
              xmlns:viewmodel="clr-namespace:ManageSchool.ViewModels"
              xmlns:ur="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              x:Class="ManageSchool.Views.ManagePage"
@@ -15,56 +16,146 @@
                      Clicked="OnItemClicked">
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    
-    <Grid>
-    <VerticalStackLayout BackgroundColor="{StaticResource PrimaryContainer}">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Button Text="Add Teacher" 
-                    Command="{Binding AddTeacherCommand}"
-                    Style="{StaticResource AddButton}"/>
-            <Button Text="Add Janitor"
-                    Command="{Binding AddJenitorCommand}"
-                    Style="{StaticResource AddButton}"
-                    Grid.Column="1"/>
-            <Button Text="Add Student"
-                    Command="{Binding AddStudentCommand}"
-                    Style="{StaticResource AddButton}"
-                    Grid.ColumnSpan="2"
-                    Grid.Row="1"/>
-        </Grid>
-    </VerticalStackLayout>
 
-        <ContentView x:Name="FormOverlay" IsVisible="{Binding IsFormVisible}">
-            <VerticalStackLayout BackgroundColor="White"
-                                  Padding="20"
-                                  HorizontalOptions="Center"
-                                  VerticalOptions="Center"
-                                  WidthRequest="300"
-                                  HeightRequest="400">
-                <!--<Label Text="Add Entity Form"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center" />
-                <Entry Placeholder="Name" />
-                <Entry Placeholder="Details" />-->
-                <Button Text="Submit"
-                        Command="{Binding SubmitFormCommand}"
-                        Style="{StaticResource ButtonSignInUp}"
-                        />
+    <Grid>
+        <VerticalStackLayout BackgroundColor="{StaticResource PrimaryContainer}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Text="Add Teacher" 
+                        Command="{Binding SelectFormCommand}"
+                        CommandParameter="Teacher"
+                        Style="{StaticResource AddButton}"/>
+                <Button Text="Add Janitor"
+                        Command="{Binding SelectFormCommand}"
+                        CommandParameter="Janitor"
+                        Style="{StaticResource AddButton}"
+                        Grid.Column="1"/>
+                <Button Text="Add Student"
+                        Command="{Binding SelectFormCommand}"
+                        CommandParameter="Student"
+                        Style="{StaticResource AddButton}"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="1"/>
+            </Grid>
+        </VerticalStackLayout>
+
+        <ContentView IsVisible="{Binding IsTeacherForm}">
+            <Frame CornerRadius="15"
+                    Padding="20"
+                    HeightRequest="500"
+                    WidthRequest="325"
+                    BackgroundColor="{StaticResource PrimaryContainer}"
+                   HasShadow="True"
+                   BorderColor="{StaticResource PrimaryContainer}"
+                   >
+                <StackLayout>
+                    <Label Text="Teacher Name"/>
+                    <Entry Text="{Binding Teacher.Name}"/>
+                    <Label Text="Surname"/>
+                    <Entry Text="{Binding Teacher.Surname}"/>
+                    <Label Text="Professions"/>
+                    <Entry Text="{Binding Teacher.Professions}"/>
+                    <Button Text="Submit" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
+                                    Style="{StaticResource ButtonSignInUp}"
+                            CommandParameter="Teacher"
+                                    Margin="0,5"></Button>
+                    <Button Text="Cancel"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=CancelFormCommand}"
+                                    Style="{StaticResource ButtonSignInUp}"
+                                    Margin="0,5"
+                                    />
+                </StackLayout>
+            </Frame>
+        </ContentView>
+        <ContentView IsVisible="{Binding IsJanitorForm}">
+            <Frame CornerRadius="15"
+                    Padding="20"
+                    HeightRequest="500"
+                    WidthRequest="325"
+                    BackgroundColor="White"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="Janitor Name"/>
+                    <Entry Text="{Binding Janitor.Name}"/>
+                    <Label Text="Surname"/>
+                    <Entry Text="{Binding Janitor.Surname}"/>
+                    <Button Text="Submit" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
+                            CommandParameter="Janitor"
+                                    Style="{StaticResource ButtonSignInUp}"
+                                    Margin="0,5"></Button>
+                    <Button Text="Cancel"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=CancelFormCommand}"
+                                    Style="{StaticResource ButtonSignInUp}"
+                                    Margin="0,5"
+                                    />
+                </StackLayout>
+            </Frame>
+        </ContentView>
+        <ContentView IsVisible="{Binding IsStudentForm}">
+            <Frame CornerRadius="15"
+                    Padding="20"
+                    HeightRequest="500"
+                    WidthRequest="325"
+                    BackgroundColor="White"
+                   HasShadow="True">
+            <StackLayout>
+                <Label Text="Student full name"/>
+                <Entry Text="{Binding Student.FullName}"/>
+                <Label Text="Grade"/>
+                <Entry Text="{Binding Student.Grade}"/>
+                <Label Text="Student's teacher"/>
+                <Entry Text="{Binding Student.TeacherID}"/>
+                    <Button Text="Submit" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
+                        CommandParameter="Student"
+                                    Style="{StaticResource ButtonSignInUp}"
+                                    Margin="0,5"></Button>
                 <Button Text="Cancel"
-                        Command="{Binding CancelFormAsyncCommand}"
-                        Style="{StaticResource ButtonSignInUp}"
-                        Margin="0,5"
-                        />
-            </VerticalStackLayout>
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=CancelFormCommand}"
+                                    Style="{StaticResource ButtonSignInUp}"
+                                    Margin="0,5"
+                                    />
+            </StackLayout>
+            </Frame>
         </ContentView>
     </Grid>
 </ContentPage>
+
+<!--<ContentView.ControlTemplate>
+    <ControlTemplate>
+        <ContentPresenter Content="{Binding SelectedForm}"/>
+    </ControlTemplate>
+</ContentView.ControlTemplate>-->
+
+<!--<ContentView IsVisible="{Binding IsTeacherForm}">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="TeacherTemplate" x:DataType="model:Teacher">
+                <StackLayout>
+                    <Label Text="Teacher Name"/>
+                    <Entry Text="{Binding Name}"/>
+                    <Label Text="Subject"/>
+                    <Entry Text="{Binding Subject}"/>
+                    <Button Text="Submit" 
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
+                            Style="{StaticResource ButtonSignInUp}"
+                            Margin="0,5"></Button>
+                    <Button Text="Cancel"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=CancelFormCommand}"
+                            Style="{StaticResource ButtonSignInUp}"
+                            Margin="0,5"
+                            />
+                </StackLayout>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentView.Resources>
+</ContentView>-->

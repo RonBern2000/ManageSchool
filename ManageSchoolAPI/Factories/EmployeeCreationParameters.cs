@@ -10,5 +10,6 @@ namespace ManageSchoolAPI.Factories
         public string Name { get; set; } = default!;
         public string Surname { get; set; } = default!;
         public Profession? Professions { get; set; }
+        public User Manager { get; set; } = default!;
     }
 }

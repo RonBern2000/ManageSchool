@@ -28,6 +28,7 @@ builder.Services.Configure<JwtSettings>(
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 
 builder.Services.AddControllers();
 

@@ -29,6 +29,9 @@ namespace ManageSchool
             builder.Services.AddHttpClient<IAuthService, AuthService>()
                             .AddHttpMessageHandler<JwtTokenHandler>(); // Handler that attaches token to the Authorization Header
 
+            builder.Services.AddHttpClient<IAddEmployeeAndStudentService, ManageEmployeeAndStudentService>()
+                .AddHttpMessageHandler<JwtTokenHandler>();
+
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<MainPage>();
 

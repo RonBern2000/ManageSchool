@@ -1,40 +1,80 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ManageSchool.Models;
+using ManageSchool.Services;
 
 namespace ManageSchool.ViewModels
 {
     public partial class ManageViewModel: ObservableObject
     {
+        private readonly IAddEmployeeAndStudentService _addEmployeeAndStudentService;
         [ObservableProperty]
-        bool isFormVisible;
-
-        [RelayCommand]
-        public async Task AddTeacherAsync()
+        bool isStudentForm;
+        [ObservableProperty]
+        bool isTeacherForm;
+        [ObservableProperty]
+        bool isJanitorForm;
+        [ObservableProperty]
+        Teacher teacher  = new Teacher();
+        [ObservableProperty]
+        Janitor janitor = new Janitor();
+        [ObservableProperty] 
+        Student student = new Student();
+        [ObservableProperty]
+        ICollection<Teacher> teachers = [];
+        public ManageViewModel(IAddEmployeeAndStudentService addEmployeeAndStudentService)
         {
-            IsFormVisible = true;
+            _addEmployeeAndStudentService = addEmployeeAndStudentService;
         }
         [RelayCommand]
-        public async Task AddJenitorAsync()
+        public void SelectForm(string formType)
         {
-            IsFormVisible = true;
+            switch (formType)
+            {
+                case "Teacher":
+                    Teacher = new Teacher();
+                    IsTeacherForm = true;
+                    return;
+                case "Janitor":
+                    Janitor = new Janitor();
+                    IsJanitorForm = true;
+                    return;
+                case "Student":
+                    //TODO: GET request to update the Teacher ICollection
+                    Student = new Student();
+                    IsStudentForm = true;
+                    return;
+            }
         }
         [RelayCommand]
-        public async Task AddStudentAsync()
+        public async Task SubmitFormAsync(string modelType)
         {
-            IsFormVisible = true;
+            HttpResponseMessage? responseMessage = null;
+            switch (modelType)
+            {
+                case "Teacher":
+                    responseMessage = await _addEmployeeAndStudentService.AddTeacherAsync(Teacher);
+                    break;
+                case "Janitor":
+                    responseMessage = await _addEmployeeAndStudentService.AddJanitorAsync(Janitor);
+                    break;
+                case "Student":
+                    responseMessage = await _addEmployeeAndStudentService.AddStudentAsync(Student);
+                    break;
+            }
+            if(responseMessage is not null && responseMessage.IsSuccessStatusCode)
+            {
+                // Toast msg for Success
+                return;
+            }
+            // Toast msg for Error
         }
         [RelayCommand]
-        public void CancelFormAsync()=>
-            IsFormVisible = false;
-        [RelayCommand]
-        public async Task SubmitFormAsync()
+        public void CancelForm()
         {
-
+            IsStudentForm = false;
+            IsTeacherForm = false;
+            IsJanitorForm= false;
         }
     }
 }

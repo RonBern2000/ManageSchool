@@ -12,6 +12,7 @@ namespace ManageSchoolAPI.Models
         public string EmployeeId { get; set; } = default!;
         public string Name { get; set; } = default!;
         public string Surname { get; set; } = default!;
+        public virtual User Manager { get; set; } = default!;
         public Employee()
         { }
         public Employee(string name, string surename)

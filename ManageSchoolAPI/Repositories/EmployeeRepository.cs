@@ -42,5 +42,11 @@ namespace ManageSchoolAPI.Repositories
             }
             await _schoolContext.SaveChangesAsync();
         }
+
+        public async Task<Teacher?> ?GetTeacherAsync(string employeeId)
+        {
+            var t = await _schoolContext.Teachers.FindAsync(employeeId);
+            return t is not null ? t : null;
+        }
     }
 }

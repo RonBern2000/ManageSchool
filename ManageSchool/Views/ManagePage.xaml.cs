@@ -8,7 +8,7 @@ public partial class ManagePage : ContentPage
 	{
 		InitializeComponent();
         BindingContext = manageViewModel;
-	}
+    }
 
     protected override void OnAppearing()
     {
