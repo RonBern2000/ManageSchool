@@ -3,8 +3,8 @@ using ManageSchoolAPI.Models.Roles;
 
 namespace ManageSchoolAPI.Factories
 {
-    public interface IEmployeeFactory
+    public interface IEmployeeFactory<T> where T : Employee
     {
-        public Employee CreateEmployee(EmployeeCreationParameters employeeCreationParameters);
+        public T CreateEmployee(EmployeeCreationParameters employeeCreationParameters);
     }
 }
