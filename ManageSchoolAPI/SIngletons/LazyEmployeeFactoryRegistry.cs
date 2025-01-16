@@ -1,17 +1,20 @@
 ﻿using ManageSchoolAPI.Factories;
 using ManageSchoolAPI.Models;
+using System.Collections.Immutable;
 
 namespace ManageSchoolAPI.SIngletons
 {
     public sealed class LazyEmployeeFactoryRegistry
     {
-        private static readonly Lazy<Dictionary<string, IEmployeeFactory>> instance = new Lazy<Dictionary<string, IEmployeeFactory>>(() => []);
-        public static Dictionary<string, IEmployeeFactory> Instance => instance.Value;
+        private static readonly Lazy<ImmutableDictionary<string, IEmployeeFactory<Employee>>> instance = new Lazy<ImmutableDictionary<string, IEmployeeFactory<Employee>>>(() => InitializeFactories());
+        public static ImmutableDictionary<string, IEmployeeFactory<Employee>> Instance => instance.Value;
         private LazyEmployeeFactoryRegistry() { }
-        public void InitializeFactories()
+        private static ImmutableDictionary<string, IEmployeeFactory<Employee>> InitializeFactories()
         {
-            Instance[nameof(Teacher)] = new TeacherFactory();
-            Instance[nameof(Janitor)] = new JanitorFactory();
+            var factories = ImmutableDictionary<string, IEmployeeFactory<Employee>>.Empty.ToBuilder();
+            factories[nameof(Teacher)] = new TeacherFactory();
+            factories[nameof(Janitor)] = new JanitorFactory();
+            return factories.ToImmutable();
         }
     }
 }

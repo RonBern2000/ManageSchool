@@ -32,6 +32,9 @@ namespace ManageSchool
             builder.Services.AddHttpClient<IAddEmployeeAndStudentService, ManageEmployeeAndStudentService>()
                 .AddHttpMessageHandler<JwtTokenHandler>();
 
+            builder.Services.AddHttpClient<IGetTeachers, ManageEmployeeAndStudentService>()
+                .AddHttpMessageHandler<JwtTokenHandler>();
+
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<MainPage>();
 

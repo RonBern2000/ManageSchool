@@ -6,5 +6,6 @@ namespace ManageSchoolAPI.Repositories
         Task AddEmployeeAsync(Employee employee);
         Task DeleteEmployeeAsync(Employee employee);
         Task<Teacher?> ?GetTeacherAsync(string employeeId);
+        Task<IList<Teacher>> GetTeachersAsync(string userId);
     }
 }

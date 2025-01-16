@@ -1,10 +1,12 @@
 ﻿using ManageSchool.Models;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ManageSchool.Services
 {
-    public class ManageEmployeeAndStudentService : IAddEmployeeAndStudentService
+    public class ManageEmployeeAndStudentService : IAddEmployeeAndStudentService, IGetTeachers 
     {
         private readonly HttpClient _httpClient;
         private const string apiUrl = "http://10.0.2.2:5153/api/Manage";
@@ -31,6 +33,15 @@ namespace ManageSchool.Services
             var jsonData = new StringContent(JsonSerializer.Serialize(t), Encoding.UTF8, "application/json");
             var res = await _httpClient.PostAsync($"{apiUrl}/AddTeacher", jsonData);
             return res;
+        }
+
+        public async Task<IList<Teacher>?> GetTeachersAsync()
+        {
+            var res = await _httpClient.GetAsync($"{apiUrl}/GetTeachers");
+            if (res is null)
+                return null;
+            var teachers = await res.Content.ReadFromJsonAsync<IList<Teacher>>();
+            return teachers;
         }
     }
 }

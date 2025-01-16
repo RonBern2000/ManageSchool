@@ -6,6 +6,7 @@ using ManageSchoolAPI.SIngletons;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -34,8 +35,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton(provider => LazyEmployeeFactoryRegistry.Instance);
 
 builder.Services.AddDbContext<SchoolContext>(options =>
 {

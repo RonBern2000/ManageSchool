@@ -8,9 +8,9 @@ namespace ManageSchool.Models
 {
     public enum Grade
     {
-        Tenth = 0,
-        Eleventh = 1,
-        Twelfth = 2,
+        Tenth = 1,
+        Eleventh = 2,
+        Twelfth = 4,
     }
     public class Student
     {

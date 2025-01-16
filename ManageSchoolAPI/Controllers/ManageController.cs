@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using ManageSchoolAPI.Enums;
+using System.Net.WebSockets;
+using System.Collections.Immutable;
 
 namespace ManageSchoolAPI.Controllers
 {
@@ -16,16 +18,15 @@ namespace ManageSchoolAPI.Controllers
     [Authorize]
     public class ManageController : ControllerBase
     {
-        private readonly LazyEmployeeFactoryRegistry _lazyEmployeeFactoryRegistry;
+        private readonly ImmutableDictionary<string, IEmployeeFactory<Employee>> _factoryRegistry;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IUserRepository _userRepository;
         private readonly IStudentRepository _studentRepository;
-        public ManageController(LazyEmployeeFactoryRegistry lazyEmployeeFactoryRegistry, IEmployeeRepository employeeRepository, IUserRepository userRepository, IStudentRepository studentRepository)
+        public ManageController(IEmployeeRepository employeeRepository, IUserRepository userRepository, IStudentRepository studentRepository)
         {
+            _factoryRegistry = LazyEmployeeFactoryRegistry.Instance;
             _employeeRepository = employeeRepository;
-            _lazyEmployeeFactoryRegistry = lazyEmployeeFactoryRegistry;
             _userRepository = userRepository;
-            _lazyEmployeeFactoryRegistry.InitializeFactories();
             _studentRepository = studentRepository;
         }
         [HttpPost("AddTeacher")]
@@ -41,12 +42,12 @@ namespace ManageSchoolAPI.Controllers
             EmployeeCreationParameters parameters = new EmployeeCreationParameters
             {
                 EmployeeRole = new TeacherRole(),
-                Name = newTeacher.Name,
-                Surname = newTeacher.Surname,
+                Name = newTeacher.Name!,
+                Surname = newTeacher.Surname!,
                 Professions = newTeacher.Professions,
                 Manager = user,
             };
-            var t = (Teacher)LazyEmployeeFactoryRegistry.Instance[nameof(Teacher)].CreateEmployee(parameters);
+            var t = FactoryHelper.CreateEmployee<Teacher>(nameof(Teacher), parameters);
             await _employeeRepository.AddEmployeeAsync(t);
             return Ok();
         }
@@ -67,7 +68,7 @@ namespace ManageSchoolAPI.Controllers
                 Surname = newJenitor.Surname,
                 Manager = user,
             };
-            var j = (Janitor)LazyEmployeeFactoryRegistry.Instance[nameof(Janitor)].CreateEmployee(parameters);
+            var j = FactoryHelper.CreateEmployee<Janitor>(nameof(Janitor), parameters);
             await _employeeRepository.AddEmployeeAsync(j);
             return Ok();
         }
@@ -97,6 +98,30 @@ namespace ManageSchoolAPI.Controllers
             await _studentRepository.AddStudentAsync(student);
 
             return Ok();
+        }
+        [HttpGet("GetTeachers")]
+        public async Task<ActionResult<IList<Teacher>>> GetTeachersAsync()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+                return BadRequest();
+            var user = await _userRepository.GetUserAsync(userId);
+            if (user is null)
+                return BadRequest();
+
+            var teachers = await _employeeRepository.GetTeachersAsync(userId);
+            IList<TeacherDTO> dtoTeachers = [];
+            foreach (var teacher in teachers)
+            {
+                dtoTeachers.Add(new TeacherDTO()
+                {
+                    Name = teacher.Name,
+                    Surname = teacher.Surname,
+                    Professions = teacher.Professions,
+                    UserId = userId,
+                });
+            }
+            return Ok(dtoTeachers);
         }
     }
 }

@@ -4,8 +4,9 @@ namespace ManageSchoolAPI.Models.DTO
 {
     public class TeacherDTO
     {
-        public string Name { get; set; } = default!;
-        public string Surname { get; set; } = default!;
-        public Profession Professions { get; set; } = default!;
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
+        public Profession Professions { get; set; }
+        public string? UserId { get; set; }
     }
 }

@@ -8,6 +8,8 @@ namespace ManageSchool.ViewModels
     public partial class ManageViewModel: ObservableObject
     {
         private readonly IAddEmployeeAndStudentService _addEmployeeAndStudentService;
+        private readonly IGetTeachers _getTeachersService;
+        #region Props
         [ObservableProperty]
         bool isStudentForm;
         [ObservableProperty]
@@ -21,13 +23,21 @@ namespace ManageSchool.ViewModels
         [ObservableProperty] 
         Student student = new Student();
         [ObservableProperty]
-        ICollection<Teacher> teachers = [];
-        public ManageViewModel(IAddEmployeeAndStudentService addEmployeeAndStudentService)
+        IList<Teacher> ?teachers = [];
+        [ObservableProperty]
+        Teacher selectedTeacher = new Teacher();
+        [ObservableProperty]
+        IList<string> professions = ["Biolegy", "Math", "History", "Geography"];
+        [ObservableProperty]
+        IList<string> selectedProfessions = [];
+        #endregion
+        public ManageViewModel(IAddEmployeeAndStudentService addEmployeeAndStudentService, IGetTeachers getTeachersService)
         {
             _addEmployeeAndStudentService = addEmployeeAndStudentService;
+            _getTeachersService = getTeachersService;
         }
         [RelayCommand]
-        public void SelectForm(string formType)
+        public async Task SelectForm(string formType)
         {
             switch (formType)
             {
@@ -40,7 +50,7 @@ namespace ManageSchool.ViewModels
                     IsJanitorForm = true;
                     return;
                 case "Student":
-                    //TODO: GET request to update the Teacher ICollection
+                    Teachers = await _getTeachersService.GetTeachersAsync();
                     Student = new Student();
                     IsStudentForm = true;
                     return;
@@ -53,6 +63,7 @@ namespace ManageSchool.ViewModels
             switch (modelType)
             {
                 case "Teacher":
+                    Teacher.Professions = (Profession)GetProffessions();
                     responseMessage = await _addEmployeeAndStudentService.AddTeacherAsync(Teacher);
                     break;
                 case "Janitor":
@@ -75,6 +86,22 @@ namespace ManageSchool.ViewModels
             IsStudentForm = false;
             IsTeacherForm = false;
             IsJanitorForm= false;
+        }
+        private int GetProffessions()
+        {
+            if (SelectedProfessions.Count == 0)
+                return 0;
+            var profs = Enum.GetNames(typeof(Profession));
+            int professions = 0;
+            foreach(var proffession in SelectedProfessions)
+            {
+                if (profs.Contains(proffession))
+                {
+                    var profession = (Profession)Enum.Parse(typeof(Profession), proffession);
+                    professions += (int)profession;
+                }
+            }
+            return professions;
         }
     }
 }

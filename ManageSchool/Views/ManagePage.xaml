@@ -4,6 +4,7 @@
              xmlns:model="clr-namespace:ManageSchool.Models"
              xmlns:viewmodel="clr-namespace:ManageSchool.ViewModels"
              xmlns:ur="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              x:Class="ManageSchool.Views.ManagePage"
              x:DataType="viewmodel:ManageViewModel"
              Title="Home"
@@ -61,7 +62,12 @@
                     <Label Text="Surname"/>
                     <Entry Text="{Binding Teacher.Surname}"/>
                     <Label Text="Professions"/>
-                    <Entry Text="{Binding Teacher.Professions}"/>
+                    <input:SelectionView SelectionType="MultipleButton"
+                                         ItemsSource="{Binding Professions}"
+                                         Margin="5"
+                                         SelectedItems="{Binding SelectedProfessions}">
+                    </input:SelectionView>
+
                     <Button Text="Submit" 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
                                     Style="{StaticResource ButtonSignInUp}"
@@ -75,6 +81,7 @@
                 </StackLayout>
             </Frame>
         </ContentView>
+        
         <ContentView IsVisible="{Binding IsJanitorForm}">
             <Frame CornerRadius="15"
                     Padding="20"
@@ -100,6 +107,7 @@
                 </StackLayout>
             </Frame>
         </ContentView>
+        
         <ContentView IsVisible="{Binding IsStudentForm}">
             <Frame CornerRadius="15"
                     Padding="20"
@@ -110,10 +118,17 @@
             <StackLayout>
                 <Label Text="Student full name"/>
                 <Entry Text="{Binding Student.FullName}"/>
-                <Label Text="Grade"/>
-                <Entry Text="{Binding Student.Grade}"/>
-                <Label Text="Student's teacher"/>
-                <Entry Text="{Binding Student.TeacherID}"/>
+                    <StackLayout RadioButtonGroup.GroupName="Grades">
+                        <Label Text="Student's grade"></Label>
+                        <RadioButton Content="Tenth" Value="1"/>
+                        <RadioButton Content="Eleventh" Value="2"/>
+                        <RadioButton Content="Twelfth" Value="4"/>
+                    </StackLayout>
+                    <Label Text="Student's teacher"/>
+                    <Picker Title="Select a teacher"
+                            ItemsSource="{Binding Teachers}"
+                            ItemDisplayBinding="{Binding Name}"
+                            SelectedItem="{Binding SelectedTeacher}"/>
                     <Button Text="Submit" 
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:ManageViewModel}}, Path=SubmitFormCommand}"
                         CommandParameter="Student"

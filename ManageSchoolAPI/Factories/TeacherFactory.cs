@@ -3,9 +3,9 @@ using ManageSchoolAPI.Enums;
 
 namespace ManageSchoolAPI.Factories
 {
-    public class TeacherFactory : IEmployeeFactory
+    public class TeacherFactory : IEmployeeFactory<Teacher>
     {
-        public Employee CreateEmployee(EmployeeCreationParameters parameters)
+        Teacher IEmployeeFactory<Teacher>.CreateEmployee(EmployeeCreationParameters parameters)
         {
             return new Teacher(parameters.EmployeeRole, parameters.Name, parameters.Surname, (Profession)parameters.Professions!) { EmployeeId = Guid.NewGuid().ToString(), Manager = parameters.Manager };
         }

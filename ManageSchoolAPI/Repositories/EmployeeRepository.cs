@@ -1,5 +1,6 @@
 ﻿using ManageSchoolAPI.Data;
 using ManageSchoolAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ManageSchoolAPI.Repositories
 {
@@ -47,6 +48,15 @@ namespace ManageSchoolAPI.Repositories
         {
             var t = await _schoolContext.Teachers.FindAsync(employeeId);
             return t is not null ? t : null;
+        }
+
+        public async Task<IList<Teacher>> GetTeachersAsync(string userId)
+        {
+            var teachers = await _schoolContext.Teachers
+                .Include(x => x.Manager)
+                .Where(x => x.Manager.UserId == userId)
+                .ToListAsync();
+            return teachers;
         }
     }
 }
