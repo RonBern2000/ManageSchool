@@ -1,5 +1,6 @@
 ﻿using ManageSchoolAPI.Data;
 using ManageSchoolAPI.Models;
+using ManageSchoolAPI.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace ManageSchoolAPI.Repositories
@@ -44,12 +45,38 @@ namespace ManageSchoolAPI.Repositories
             await _schoolContext.SaveChangesAsync();
         }
 
+        public async Task<ICollection<EmployeeDto>> GetEmployeesAsync(string userId)
+        {
+            var employees = await _schoolContext.Teachers
+               .Include(x => x.Manager)
+               .Where(x => x.Manager.UserId == userId)
+               .Select(x => new EmployeeDto
+               {
+                   EmployeeId = x.EmployeeId,
+                   Name = x.Name,
+                   Surname = x.Surname
+               })
+               .Union(
+                    _schoolContext.Jenitors
+                    .Include(x => x.Manager)
+                    .Where(x => x.Manager.UserId == userId)
+                    .Select(x => new EmployeeDto
+                    {
+                        EmployeeId = x.EmployeeId,
+                        Name = x.Name,
+                        Surname = x.Surname
+                    })
+                    )
+               .ToListAsync();
+
+            return employees;
+        }
+
         public async Task<Teacher?> ?GetTeacherAsync(string employeeId)
         {
             var t = await _schoolContext.Teachers.FindAsync(employeeId);
             return t is not null ? t : null;
         }
-
         public async Task<IList<Teacher>> GetTeachersAsync(string userId)
         {
             var teachers = await _schoolContext.Teachers

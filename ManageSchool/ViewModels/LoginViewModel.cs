@@ -10,14 +10,11 @@ namespace ManageSchool.ViewModels
     {
         private readonly IAuthService _authService;
         [ObservableProperty]
-        User user;
-        [ObservableProperty]
         string username;
         [ObservableProperty]
         string password;
         public LoginViewModel(IAuthService authService)
         {
-            user = new();
             username = string.Empty;
             password = string.Empty;
             _authService = authService;
@@ -34,7 +31,6 @@ namespace ManageSchool.ViewModels
             if (loginResponse is not null)
             {
                 await _authService.SaveTokenAsync(loginResponse.Token!);
-                User = loginResponse.User!;
 
                 await Shell.Current.GoToAsync($"{nameof(ManagePage)}", true);
                 return;

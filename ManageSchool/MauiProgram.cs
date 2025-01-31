@@ -32,6 +32,9 @@ namespace ManageSchool
             builder.Services.AddHttpClient<IAddEmployeeAndStudentService, ManageEmployeeAndStudentService>()
                 .AddHttpMessageHandler<JwtTokenHandler>();
 
+            builder.Services.AddHttpClient<IGetEmployeesAndStudents, ManageEmployeeAndStudentService>()
+                .AddHttpMessageHandler<JwtTokenHandler>();
+
             builder.Services.AddHttpClient<IGetTeachers, ManageEmployeeAndStudentService>()
                 .AddHttpMessageHandler<JwtTokenHandler>();
 
@@ -43,6 +46,10 @@ namespace ManageSchool
 
             builder.Services.AddTransient<ManagePage>();
             builder.Services.AddTransient<ManageViewModel>();
+
+            builder.Services.AddTransient<EmployeesPage>();
+            builder.Services.AddTransient<StudentsPage>();
+
 
 #if DEBUG
             builder.Logging.AddDebug();

@@ -5,6 +5,7 @@
              xmlns:viewmodel="clr-namespace:ManageSchool.ViewModels"
              xmlns:ur="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:local="clr-namespace:ManageSchool.Models"
              x:Class="ManageSchool.Views.ManagePage"
              x:DataType="viewmodel:ManageViewModel"
              Title="Home"
@@ -120,9 +121,15 @@
                 <Entry Text="{Binding Student.FullName}"/>
                     <StackLayout RadioButtonGroup.GroupName="Grades">
                         <Label Text="Student's grade"></Label>
-                        <RadioButton Content="Tenth" Value="1"/>
-                        <RadioButton Content="Eleventh" Value="2"/>
-                        <RadioButton Content="Twelfth" Value="4"/>
+                        <RadioButton Content="Tenth" 
+                                     Value="1"
+                                     IsChecked="{Binding Student.Grade, Mode=TwoWay}"/>
+                        <RadioButton Content="Eleventh" 
+                                     Value="2"
+                                     IsChecked="{Binding Student.Grade, Mode=TwoWay}"/>
+                        <RadioButton Content="Twelfth"
+                                     Value="4"
+                                     IsChecked="{Binding Student.Grade, Mode=TwoWay}"/>
                     </StackLayout>
                     <Label Text="Student's teacher"/>
                     <Picker Title="Select a teacher"

@@ -4,6 +4,7 @@ namespace ManageSchoolAPI.Models.DTO
 {
     public class TeacherDTO
     {
+        public string? EmployeeId { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public Profession Professions { get; set; }

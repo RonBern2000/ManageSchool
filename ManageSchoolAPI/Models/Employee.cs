@@ -12,6 +12,7 @@ namespace ManageSchoolAPI.Models
         public string EmployeeId { get; set; } = default!;
         public string Name { get; set; } = default!;
         public string Surname { get; set; } = default!;
+        public double Salary { get; set; }
         public virtual User Manager { get; set; } = default!;
         public Employee()
         { }
@@ -22,7 +23,7 @@ namespace ManageSchoolAPI.Models
         }
         public void Work()
         {
-            EmployeeRole.DoTheirDuties(); // whether its a Jenitor or a Teacher
+            EmployeeRole.DoTheirDuties(); // whether its a Jenitor or a Teacher. TODO: In a service we should save changes after work!
         }
         public abstract void EarnMoney();
     }

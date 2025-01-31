@@ -85,7 +85,7 @@ namespace ManageSchoolAPI.Controllers
             await _userRepository.AddUserAsync(newUser);
 
             var token = GenerateJwtToken(newUser);
-
+            
             return Ok(new
             {
                 Token = token,
@@ -111,7 +111,6 @@ namespace ManageSchoolAPI.Controllers
             return Ok(new
             {
                 Token = token,
-                User = user,
             });
         }
         [Authorize]

@@ -15,7 +15,7 @@ namespace ManageSchoolAPI.Models
         }
         public override void EarnMoney()
         {
-            //TODO: Service that updates salary(with a set rate) in db
+            Salary += 5;
         }
     }
 }

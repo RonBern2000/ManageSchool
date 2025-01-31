@@ -70,6 +70,7 @@ namespace ManageSchool.ViewModels
                     responseMessage = await _addEmployeeAndStudentService.AddJanitorAsync(Janitor);
                     break;
                 case "Student":
+                    Student.TeacherId = SelectedTeacher.EmployeeId;
                     responseMessage = await _addEmployeeAndStudentService.AddStudentAsync(Student);
                     break;
             }

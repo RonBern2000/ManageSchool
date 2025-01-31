@@ -73,9 +73,9 @@ namespace ManageSchoolAPI.Controllers
             return Ok();
         }
         [HttpPost("AddStudent")]
-        public async Task<IActionResult> AddStudentAsync(string fullName, int grade, string teacherId)
+        public async Task<IActionResult> AddStudentAsync(StudentDTO s)
         {
-            if (teacherId is null)
+            if (s.TeacherId is null)
                 return BadRequest();
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId is null)
@@ -84,15 +84,16 @@ namespace ManageSchoolAPI.Controllers
             if (user is null)
                 return BadRequest();
 
-            var t = await _employeeRepository.GetTeacherAsync(teacherId)!;
+            var t = await _employeeRepository.GetTeacherAsync(s.TeacherId)!;
             if (t is null)
             {
                 return BadRequest();
             }
             Student student = new Student()
             {
-                FullName = fullName,
-                Grade = (Grade)grade,
+                StudentId = Guid.NewGuid().ToString(),
+                FullName = s.FullName,
+                Grade = (Grade)s.Grade,
                 Teacher = t,
             };
             await _studentRepository.AddStudentAsync(student);
@@ -115,6 +116,7 @@ namespace ManageSchoolAPI.Controllers
             {
                 dtoTeachers.Add(new TeacherDTO()
                 {
+                    EmployeeId = teacher.EmployeeId,
                     Name = teacher.Name,
                     Surname = teacher.Surname,
                     Professions = teacher.Professions,
@@ -122,6 +124,32 @@ namespace ManageSchoolAPI.Controllers
                 });
             }
             return Ok(dtoTeachers);
+        }
+        [HttpGet("GetEmployees")]
+        public async Task<ActionResult<IList<EmployeeDto>>> GetEmployeesAsync()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+                return BadRequest();
+            var user = await _userRepository.GetUserAsync(userId);
+            if (user is null)
+                return BadRequest();
+
+            var employeeDtos = await _employeeRepository.GetEmployeesAsync(userId);
+            return Ok(employeeDtos);
+        }
+        [HttpGet("GetStudents")]
+        public async Task<ActionResult<IList<StudentDTO>>> GetStudentsAsync()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId is null)
+                return BadRequest();
+            var user = await _userRepository.GetUserAsync(userId);
+            if (user is null)
+                return BadRequest();
+
+            var students = await _studentRepository.GetAllStudentsAsync(userId);
+            return Ok(students);
         }
     }
 }

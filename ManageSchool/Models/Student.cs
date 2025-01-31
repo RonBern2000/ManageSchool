@@ -15,7 +15,7 @@ namespace ManageSchool.Models
     public class Student
     {
         public string FullName { get; set; } = default!;
-        public Grade Grade { get; set; } = default!;
-        public string? TeacherID { get; set; }
+        public int Grade { get; set; } = default!;
+        public string? TeacherId { get; set; }
     }
 }
